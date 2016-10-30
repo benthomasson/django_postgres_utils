@@ -59,6 +59,8 @@ $$ LANGUAGE 'plpgsql';
 def install_multi_nextval():
     '''
     Install the multi_nextval stored function into the database.
+
+    Source: https://www.depesz.com/2008/03/20/getting-multiple-values-from-sequences/
     '''
     cursor = connection.cursor()
     cursor.execute(multi_nextval)
