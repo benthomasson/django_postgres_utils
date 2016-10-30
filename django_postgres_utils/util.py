@@ -3,6 +3,9 @@ from django.db import connection
 
 
 def make_materialized_view(name, unique_index, qs):
+    '''
+    Build a materialized view from a the query 'qs' with name 'name' using the column 'unique_index' as a unique index on the view.
+    '''
     raw_query, params = qs.query.sql_with_params()
     params = tuple([("'%s'" % unicode(p).replace('%', '%%')) if isinstance(p, basestring) else str(p) for p in params])
     raw_query = raw_query.replace('%s', '{}').format(*params).replace('%', '%%')
@@ -14,6 +17,9 @@ def make_materialized_view(name, unique_index, qs):
 
 
 def make_materialized_view_non_unique(name, qs):
+    '''
+    Build a materialized view from a the query 'qs' with name 'name' without a unique index.
+    '''
     raw_query, params = qs.query.sql_with_params()
     params = tuple([("'%s'" % unicode(p).replace('%', '%%')) if isinstance(p, basestring) else str(p) for p in params])
     raw_query = raw_query.replace('%s', '{}').format(*params).replace('%', '%%')
@@ -51,11 +57,17 @@ $$ LANGUAGE 'plpgsql';
 
 
 def install_multi_nextval():
+    '''
+    Install the multi_nextval stored function into the database.
+    '''
     cursor = connection.cursor()
     cursor.execute(multi_nextval)
 
 
 def model_pk_seq(model, n):
+    '''
+    Using the multi_nextval stored function and the model.pk_sequence sequence return an xrange that provides 'n' private keys to be used for the model 'model'.
+    '''
     if not hasattr(model._meta):
         raise AttributeError("pk_sequence is required on {0}._meta".format(model))
     if n <= 0:
