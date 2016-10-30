@@ -61,10 +61,8 @@ def model_pk_seq(model, n):
     if n <= 0:
         return xrange(0)
     cursor = connection.cursor()
-    print("select multi_nextval(%s, %s)" % (model._meta.pk_sequence, n))
     cursor.execute("select multi_nextval(%s, %s)", (model._meta.pk_sequence, n))
     result = cursor.fetchone()[0]
-    print("{0} to {1}".format(result - n, result))
     assert result > 0, "multi_nextval returned a negative pk value for {0}, {1}: {2}".format(model, n, result)
     assert result - n + 1 > 0, "multi_nextval returned a negative pk range for {0}, {1}: {2} to {3}".format(model, result - n + 1,  result + 1)
     return xrange(result - n + 1, result + 1)
