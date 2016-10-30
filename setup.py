@@ -17,9 +17,11 @@ test_requirements = [
     # TODO: put package test requirements here
 ]
 
+import django_postgres_utils
+
 setup(
     name='django_postgres_utils',
-    version='0.1.0',
+    version=django_postgres_utils.__version__,
     description="Utilities for Django and Postgres",
     long_description=readme + '\n\n' + history,
     author="Ben Thomasson",
