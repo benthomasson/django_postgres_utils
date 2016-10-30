@@ -70,7 +70,7 @@ def model_pk_seq(model, n):
     '''
     Using the multi_nextval stored function and the model.pk_sequence sequence return an xrange that provides 'n' private keys to be used for the model 'model'.
     '''
-    if not hasattr(model._meta):
+    if not hasattr(model._meta, 'pk_sequence'):
         raise AttributeError("pk_sequence is required on {0}._meta".format(model))
     if n <= 0:
         return xrange(0)
